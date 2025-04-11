@@ -1,4 +1,4 @@
-package Netp78;
+package NetworkProgramin78;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

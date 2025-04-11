@@ -1,4 +1,4 @@
-package Netp78;
+package NetworkProgramin78;
 
 import javax.swing.*;
 import java.awt.*;
