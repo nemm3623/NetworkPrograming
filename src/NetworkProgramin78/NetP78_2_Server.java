@@ -3,6 +3,7 @@ package NetworkProgramin78;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 
 public class NetP78_2_Server {
@@ -60,28 +61,25 @@ public class NetP78_2_Server {
                 }
 
                 // 입력 시간에 따라 서로 결과, 라운드 시작이 달라지기 때문에 서브 스레드 사용
-                Thread t0 = new Thread(() -> { try { client[0].setInput(); } catch (IOException e) {
-                    System.err.println(e.getMessage());
-                }});
-                Thread t1 = new Thread(() -> { try { client[1].setInput(); } catch (IOException e) {
-                    System.err.println(e.getMessage());
-                }});
+                Thread t0 = new Thread(() -> {client[0].setInput();});
+                Thread t1 = new Thread(() -> {client[1].setInput();});
 
                 t0.start();
                 t1.start();
+                t0.join();
+                t1.join();
 
-                t0.join(10000);
-                t1.join(10000);
-
-                // 입력 지연시 기권패 처리, 둘 모두 기권일 경우 무승부
-                if (!client[0].set_input) client[0].input = "기권패";
-                if (!client[1].set_input) client[1].input = "기권패";
+                while(!client[0].set_input || !client[1].set_input) {
+                    if(client[0].set_input) client[1].out.println("상대방이 아직 입력 중 입니다");
+                    else client[0].out.println("상대방이 아직 입력 중 입니다");
+                    Thread.sleep(300);
+                }
 
                 result = rule(client[0], client[1]);
 
                 for (Client c : client) {
                     c.out.println(i + " 라운드 " + result);
-                    c.set_input=false;
+                    c.reset();
                 }
             }
 
@@ -129,7 +127,7 @@ public class NetP78_2_Server {
         PrintWriter out;
         String input;
         Boolean set_input=false;    // 입력값 검증용 변수
-        int win = 0;
+        int win = 0;    // 최종결과 계산
 
         public Client(Socket socket)throws IOException{
             this.socket = socket;
@@ -144,15 +142,23 @@ public class NetP78_2_Server {
                 out.println("한글 혹은 영어로 입력해주세요.");
             }
         }
-        void setInput()throws IOException{
-
-            while (!(input = in.readLine()).equals("가위")
-                    && !input.equals("바위")
-                    && !input.equals("보")){
-                out.println("가위, 바위, 보 중 하나를 선택하세요.");
+        void setInput() {
+            try {
+                while (true){
+                    if ((input = in.readLine()).equals("가위") ||
+                            input.equals("바위") || input.equals("보")){
+                        set_input=true;
+                        break;
+                    }
+                    out.println("가위, 바위, 보 중 하나를 선택하세요.");
+                }
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
             }
-            set_input=true;
+
+
         }
+        void reset(){ input = ""; set_input=false; }
         void close()throws IOException{
             in.close();
             out.close();

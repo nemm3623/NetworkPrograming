@@ -8,6 +8,7 @@ public class NetP78_2_Client {
     public static void main(String[] args) {
         try {
 
+            // 디버깅을 위해 로컬호스트로 입력
             Socket socket = new Socket("localhost", 8888);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

@@ -91,6 +91,7 @@ public class NetP78_1_Client {
 
                     if((result = in.readUTF()).equals("입력 완료"))
                         System.out.println(result);
+
                     else
                         System.err.println(result);
                 }
