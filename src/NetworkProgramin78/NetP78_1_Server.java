@@ -67,6 +67,7 @@ public class NetP78_1_Server {
             double balance = in.readDouble();
 
             if(account > 0 && account <= 100 && name.length() < 16 ){
+
                 // 입력된 계좌가 없거나 입력된 계좌번호보다 큰 계좌번호가 아닌 경우 중복 계좌 검증
                 if(file.length() > 0 && file.length() >= (account-1) * record.size()) {
 
@@ -100,7 +101,6 @@ public class NetP78_1_Server {
             // 등록된 계좌가 없거나 조회할 계좌번호가 존재하는 계좌번호들보다 큰 경우 배제
             if(file.length() > 0 && file.length() >= (account-1) * record.size()){
                 file.seek((account-1) * record.size());
-                //file.readInt();
                 record.read();
                 if (account == record.getAccount()){
                     out.writeUTF("출력 완료");
