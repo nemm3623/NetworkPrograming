@@ -3,7 +3,7 @@ package NetworkProgramin78;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
+
 
 
 public class NetP78_2_Server {
@@ -69,17 +69,11 @@ public class NetP78_2_Server {
                 t0.join();
                 t1.join();
 
-                while(!client[0].set_input || !client[1].set_input) {
-                    if(client[0].set_input) client[1].out.println("상대방이 아직 입력 중 입니다");
-                    else client[0].out.println("상대방이 아직 입력 중 입니다");
-                    Thread.sleep(300);
-                }
-
                 result = rule(client[0], client[1]);
 
                 for (Client c : client) {
                     c.out.println(i + " 라운드 " + result);
-                    c.reset();
+                    c.input = "";
                 }
             }
 
@@ -96,7 +90,7 @@ public class NetP78_2_Server {
         public String rule(Client c1, Client c2) {
 
             if (c1.input.equals(c2.input)) {
-                return (c1.name + " : " + c1.input + c2.name + " : " + c2.input + "\t무승부 ");
+                return (c1.name + " : " + c1.input + "\t" +c2.name + " : " + c2.input + "\t무승부 ");
             }
             else if ((c1.input.equals("가위") && c2.input.equals("보"))
                     || (c1.input.equals("보") && c2.input.equals("바위"))
@@ -126,7 +120,6 @@ public class NetP78_2_Server {
         BufferedReader in;
         PrintWriter out;
         String input;
-        Boolean set_input=false;    // 입력값 검증용 변수
         int win = 0;    // 최종결과 계산
 
         public Client(Socket socket)throws IOException{
@@ -147,7 +140,6 @@ public class NetP78_2_Server {
                 while (true){
                     if ((input = in.readLine()).equals("가위") ||
                             input.equals("바위") || input.equals("보")){
-                        set_input=true;
                         break;
                     }
                     out.println("가위, 바위, 보 중 하나를 선택하세요.");
@@ -155,10 +147,7 @@ public class NetP78_2_Server {
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
-
-
         }
-        void reset(){ input = ""; set_input=false; }
         void close()throws IOException{
             in.close();
             out.close();

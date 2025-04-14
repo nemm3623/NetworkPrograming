@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
 
@@ -17,7 +15,6 @@ public class NetP78_1_Client {
             Socket socket = new Socket("localhost", 8888);
             Client_UI client_ui = new Client_UI(socket);
         } catch (IOException e){
-            System.err.println("CLear");
             System.err.println(e.getMessage());
         }
     }
@@ -40,26 +37,15 @@ public class NetP78_1_Client {
                 System.err.println(e.getMessage());
             }
 
-            addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    try {
-                        out.close();
-                        socket.close();
-                    } catch (IOException ex) {
-                        System.err.println(ex.getMessage());
-                    }
-                    System.exit(0);
-                }
-            });
             setSize( 300, 200 );
             setLayout(new GridLayout(5,2));
-            add( new Label("계좌번호"));
+            add( new JLabel("계좌번호"));
             accountField = new JTextField();
             add( accountField );
-            add( new Label("이름"));
+            add( new JLabel("이름"));
             nameField = new JTextField();
             add( nameField );
-            add( new Label("잔고"));
+            add( new JLabel("잔고"));
             balanceField = new JTextField( 20 );
             add( balanceField );
 
@@ -75,6 +61,7 @@ public class NetP78_1_Client {
             clear = new JButton("Clear");
             clear.addActionListener(this);
             add(clear);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(true);
         }
 
