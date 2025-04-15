@@ -1,4 +1,4 @@
-package NetworkProgramin78;
+package NetworkPrograming78;
 
 import java.io.BufferedReader;
 import java.io.IOException;
