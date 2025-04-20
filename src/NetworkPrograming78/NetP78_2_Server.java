@@ -84,7 +84,6 @@ public class NetP78_2_Server {
                 c.out.println( client[0].name+" "+client[0].win+ " : " +client[1].name+" "+client[1].win + result);
                 c.close();
             }
-
         }
 
         public String rule(Client c1, Client c2) {

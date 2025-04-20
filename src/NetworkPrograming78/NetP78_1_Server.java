@@ -41,7 +41,7 @@ public class NetP78_1_Server {
 
         public void run() {
             try {
-                while(true) {
+                while (true) {
                     String input = in.readUTF();
 
                     switch (input) {
@@ -51,10 +51,9 @@ public class NetP78_1_Server {
                     }
 
                 }
-            }catch (EOFException ex){
+            } catch (EOFException ex) {
                 System.err.println("클라이언트가 접속을 종료했습니다.");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
         }
