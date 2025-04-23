@@ -10,9 +10,14 @@ public class NetP7_4_Server {
         ServerSocket theServer = null;
         Socket theSocket = null;
 
+        try {
+            theServer.setReuseAddress(true);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+
         try{
             theServer = new ServerSocket(7);
-            theServer.setReuseAddress(true);
 
             while(true){
                 theSocket = theServer.accept();
@@ -29,6 +34,7 @@ public class NetP7_4_Server {
                 System.err.println("close");
             }
         }
+
     }
     public static class Client_Handler extends Thread{
 
