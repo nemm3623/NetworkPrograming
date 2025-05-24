@@ -13,7 +13,7 @@ public class HttpURLConnectionExample {
 
     public static void main(String[] args) {
         HttpURLConnectionExample http = new HttpURLConnectionExample();
-        System.out.println("Sent Http GET request");
+        System.out.println("Sent Http POST request");
         http.sendGet();
     }
 
