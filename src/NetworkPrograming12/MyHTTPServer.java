@@ -30,13 +30,11 @@ public class MyHTTPServer {
 
     public static String getResponse(){
         return "<html><h1>Http Server Home Page...</h1><br>" +
-                "<b>Welcome to the new and improved web server!</b><br>" +
+                "<b><h1>로그인 성공!</h1></b><br>" +
                 "</html>";
     }
 
     static class DetailHandler implements HttpHandler {
-
-        Map<String, String> userData = new HashMap<>();
 
         @Override
         public void handle(HttpExchange t) throws IOException {
@@ -78,7 +76,7 @@ public class MyHTTPServer {
                     String sessionId = UUID.randomUUID().toString();
                     sessionMap.put(sessionId, id);
 
-                    String response = "<h1>로그인 성공!</h1>";
+                    String response = getResponse();
                     Headers headers = t.getResponseHeaders();
                     headers.set("Content-Type", "text/html");
                     headers.set("Set-Cookie", sessionId);
@@ -86,7 +84,6 @@ public class MyHTTPServer {
                     t.getResponseBody().write(response.getBytes());
 
                     Headers responseHeaders = t.getResponseHeaders();
-                    String responseMessage = getResponse();
 
                     System.out.println("Response Headers");
                     Set<String> keys = responseHeaders.keySet();
@@ -95,9 +92,6 @@ public class MyHTTPServer {
                         return k + " : " + values.toString() + "\n";
                     }).forEach(System.out::println);
 
-                    try (OutputStream responseBody = t.getResponseBody()) {
-                        responseBody.write(responseMessage.getBytes());
-                    }
                 }else {
                     System.out.println("Request Body is null");
                 }
